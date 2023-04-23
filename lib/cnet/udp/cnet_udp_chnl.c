@@ -172,8 +172,12 @@ static int
 udp_chnl_create(void *_stk __cne_unused)
 {
     struct protosw_entry *psw;
+    stk_t *stk = _stk;
 
-    psw = cnet_protosw_find(AF_INET, SOCK_DGRAM, 0);
+    if (stk->ipv4)
+        psw = cnet_protosw_find(AF_INET, SOCK_DGRAM, 0);
+    else
+        psw = cnet_protosw_find(AF_INET6, SOCK_DGRAM, 0);
     if (!psw)
         return -1;
     psw->funcs = &udpFuncs;

@@ -41,7 +41,10 @@ udp_create(void *_stk)
         return -1;
     }
 
-    psw = cnet_protosw_add("UDP", AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    if (stk->ipv4)
+        psw = cnet_protosw_add("UDP", AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    else
+        psw = cnet_protosw_add("UDP", AF_INET6, SOCK_DGRAM, IPPROTO_UDP);
     CNE_ASSERT(psw != NULL);
 
     cnet_ipproto_set(IPPROTO_UDP, psw);

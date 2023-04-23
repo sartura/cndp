@@ -13,6 +13,7 @@ extern "C" {
 enum tcp_output_next_nodes {
     TCP_OUTPUT_NEXT_PKT_DROP,
     TCP_OUTPUT_NEXT_IP4_OUTPUT,
+    TCP_OUTPUT_NEXT_IP6_OUTPUT,
     TCP_OUTPUT_NEXT_MAX,
 };
 

@@ -13,6 +13,7 @@ extern "C" {
 enum udp_output_next_nodes {
     UDP_OUTPUT_NEXT_PKT_DROP,
     UDP_OUTPUT_NEXT_IP4_OUTPUT,
+    UDP_OUTPUT_NEXT_IP6_OUTPUT,
     UDP_OUTPUT_NEXT_MAX,
 };
 

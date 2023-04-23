@@ -39,6 +39,11 @@ netif_show(struct netif *netif, char *ifname)
     char ip2[IP4_ADDR_STRLEN] = {0};
     char ip3[IP4_ADDR_STRLEN] = {0};
 
+    struct in6_addr addr6;
+    char ip61[IP6_ADDR_STRLEN] = {0};
+    char ip62[IP6_ADDR_STRLEN] = {0};
+    char ip63[IP6_ADDR_STRLEN] = {0};
+
     if (netif->drv == NULL)
         return;
 
@@ -70,6 +75,26 @@ netif_show(struct netif *netif, char *ifname)
             addr.s_addr = be32toh(netif->ip4_addrs[j].broadcast.s_addr);
             cne_printf(" [magenta]broadcast[]: [green]%-15s[]\n",
                        inet_ntop4(ip3, sizeof(ip3), &addr, NULL));
+        } else
+            cne_printf("\n");
+    }
+
+    for (j = 0; j < NUM_IP_ADDRS; j++) {
+        if (!netif->ip6_addrs[j].valid)
+            continue;
+
+        inet6_addr_ntoh(&addr6, &netif->ip6_addrs[j].ip);
+        cne_printf("%9s[magenta]inet.%d[]: [orange]%-15s[]", "", j,
+                   inet_ntop6(ip61, sizeof(ip61), &addr6, NULL) ?: "Invalid IP");
+
+        inet6_addr_ntoh(&addr6, &netif->ip6_addrs[j].netmask);
+        cne_printf(" [magenta]netmask[]: [goldenrod]%-15s[]",
+                   inet_ntop6(ip62, sizeof(ip62), &addr6, NULL) ?: "Invalid IP");
+
+        if (netif->ip4_addrs[j].broadcast.s_addr) {
+            inet6_addr_ntoh(&addr6, &netif->ip6_addrs[j].broadcast);
+            cne_printf(" [magenta]broadcast[]: [green]%-15s[]\n",
+                       inet_ntop6(ip63, sizeof(ip63), &addr6, NULL));
         } else
             cne_printf("\n");
     }
