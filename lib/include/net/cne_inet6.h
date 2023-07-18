@@ -325,7 +325,6 @@ inet6_unspec_addr(struct in6_addr *all_node_mcast)
 static inline bool
 inet6_is_unspec_addr(struct in6_addr *addr)
 {
-
     return (addr->s6_addr32[0] == 0 && addr->s6_addr32[1] == 0 && addr->s6_addr32[2] == 0 &&
             addr->s6_addr32[3] == 0);
 }
@@ -333,7 +332,6 @@ inet6_is_unspec_addr(struct in6_addr *addr)
 static inline bool
 inet6_is_multicast_addr(struct in6_addr *addr)
 {
-
     return (addr->s6_addr[0] == 0xFF);
 }
 

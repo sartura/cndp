@@ -13,14 +13,12 @@
 static inline void
 nd6_send_rs(void)
 {
-
     CNE_DEBUG("Not implemented yet\n");
 }
 
 static inline void
 nd6_send_ra(void)
 {
-
     CNE_DEBUG("Not implemented yet\n");
 }
 
@@ -177,7 +175,6 @@ nd6_send_na(struct cne_graph *graph, struct cne_node *node, struct in6_addr *src
 static inline void
 nd6_send_redirect(void)
 {
-
     CNE_DEBUG("Not implemented yet\n");
 }
 
@@ -185,7 +182,6 @@ nd6_send_redirect(void)
 static inline uint16_t
 nd6_process_rs(icmp6ip_t *iip)
 {
-
     CNE_SET_USED(iip);
 
     CNE_DEBUG("Not implemented yet\n");
@@ -195,7 +191,6 @@ nd6_process_rs(icmp6ip_t *iip)
 static inline uint16_t
 nd6_process_ra(icmp6ip_t *iip)
 {
-
     CNE_SET_USED(iip);
 
     CNE_DEBUG("Not implemented yet\n");
@@ -308,7 +303,6 @@ nd6_process_na(icmp6ip_t *iip)
 static inline uint16_t
 nd6_process_redirect(icmp6ip_t *iip)
 {
-
     CNE_SET_USED(iip);
     CNE_DEBUG("Not implemented yet\n");
     return ICMP6_INPUT_NEXT_PKT_DROP;
@@ -319,7 +313,6 @@ nd6_process_redirect(icmp6ip_t *iip)
 static inline void
 nd6_validate_rs(void)
 {
-
     /* Hosts MUST silently discard any received Router Solicitation
     Messages. */
 
@@ -470,14 +463,12 @@ nd6_validate_na(icmp6ip_t *iip)
 static inline void
 nd6_validate_redirect(void)
 {
-
     CNE_DEBUG("Not implemented yet\n");
 }
 
 uint16_t
 nd6_recv_requests(struct cne_graph *graph, struct cne_node *node, icmp6ip_t *iip)
 {
-
     uint16_t nxt;
 
     switch (iip->icmp6.icmp6_type) {
@@ -521,7 +512,6 @@ nd6_recv_requests(struct cne_graph *graph, struct cne_node *node, icmp6ip_t *iip
 static inline void
 nd6_init(void)
 {
-
     CNE_DEBUG("All ND6 initilizations\n");
 }
 
@@ -530,7 +520,6 @@ nd6_init(void)
 const char *
 nd6_get_state(struct nd6_cache_entry *entry)
 {
-
     switch (entry->reach_state) {
     case ND_INCOMPLETE:
         return "Incomplete";
