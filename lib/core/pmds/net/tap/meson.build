@@ -4,7 +4,7 @@
 sources = files('pmd_tap.c')
 headers = files('pmd_tap.h')
 
-deps += [cne, mempool, mmap, pktdev, pktmbuf, tun]
+deps += [cne, mempool, mmap, pktdev, pktmbuf, tun, arm]
 
 libpmd_tap = static_library('pmd_tap', sources, install: true, dependencies: deps)
 

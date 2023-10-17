@@ -8,7 +8,11 @@
 #include <stdint.h>                  // for uint32_t, uint16_t
 #include <cne_cpuid.h>               // for CNE_REG_ECX, CNE_REG_EDX, CNE_REG_EBX
 #include <cne_common.h>              // for cne_is_power_of_2, CNE_DIM, CNE_INIT
+#if __x86_64__
 #include <cpuid.h>                   // for __get_cpuid_max, __cpuid_count
+#elif __aarch64__
+#include <arm_cpuid.h>
+#endif
 #include <cne_vect_generic.h>        // for CNE_VECT_SIMD_DEFAULT, CNE_VECT_SIMD_D...
 
 #include "cne_cpuflags.h"            // for cne_cpu_flag_t, CNE_CPUFLAG_NUMFLAGS

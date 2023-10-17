@@ -4,7 +4,7 @@
 sources = files('txbuff.c')
 headers = files('txbuff.h')
 
-deps += [cne, mmap, mempool, pktmbuf, pktdev, uds, xskdev]
+deps += [cne, mmap, mempool, pktmbuf, pktdev, uds, xskdev, arm]
 
 libtxbuff = library(libname, sources, install: true, dependencies: deps)
 txbuff = declare_dependency(link_with: libtxbuff, include_directories: include_directories('.'))

@@ -9,12 +9,16 @@
 #include <errno.h>            // for EINVAL, ENOTSUP
 #include <stddef.h>           // for NULL
 #include <stdint.h>           // for uint16_t, uint32_t, uint64_t, uint8_t
+#if __x86_64__
 #include <x86intrin.h>        // _mm_shuffle_xxx
+#include <emmintrin.h>        // for _mm_loadu_si128, _mm_set_epi8, _mm_storeu_s...
+#include <tmmintrin.h>        // for _mm_shuffle_epi8
+#elif __aarch64__
+#include <sse2neon.h>
+#endif
 #include <mempool.h>          // for mempool_t
 #include <pktmbuf.h>          // for pktmbuf_t
-#include <emmintrin.h>        // for _mm_loadu_si128, _mm_set_epi8, _mm_storeu_s...
 #include <stdbool.h>          // for bool
-#include <tmmintrin.h>        // for _mm_shuffle_epi8
 
 /**
  * @file
@@ -359,9 +363,9 @@ pktdev_mac_swap(void *data)
      */
     __m128i shfl_msk = _mm_set_epi8(15, 14, 13, 12, 5, 4, 3, 2, 1, 0, 11, 10, 9, 8, 7, 6);
 
-    __m128i hdr = _mm_loadu_si128((const __m128i_u *)data);
+    __m128i hdr = _mm_loadu_si128((const __m128i *)data);
     hdr         = _mm_shuffle_epi8(hdr, shfl_msk);
-    _mm_storeu_si128((__m128i_u *)data, hdr);
+    _mm_storeu_si128((__m128i *)data, hdr);
 }
 
 #ifdef __cplusplus

@@ -4,7 +4,7 @@
 sources = files('pktmbuf.c', 'pktmbuf_ops.c', 'pktmbuf_ptype.c')
 headers = files('pktmbuf.h', 'pktmbuf_ops.h', 'pktmbuf_ptype.h', 'pktmbuf_offload.h')
 
-deps += [cne, mmap, mempool]
+deps += [cne, mmap, mempool, arm]
 
 libpktmbuf = library(libname, sources, install: true, dependencies: deps)
 pktmbuf = declare_dependency(link_with: libpktmbuf, include_directories: include_directories('.'))

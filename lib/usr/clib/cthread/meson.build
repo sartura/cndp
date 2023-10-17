@@ -6,7 +6,7 @@ sources = files('cthread.c', 'cthread_tls.c', 'cthread_sema.c', 'cthread_sched.c
 		'ctx.c')
 headers = files('cthread.h', 'cthread_api.h')
 
-deps += [ring, timer, cne]
+deps += [ring, timer, cne, arm]
 
 libcthread = library(libname, sources, install: true, dependencies: deps)
 cthread = declare_dependency(link_with: libcthread, include_directories: include_directories('.'))

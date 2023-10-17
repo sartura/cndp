@@ -7,8 +7,12 @@
  * ACL support for x86 archs: avx2 version.
  */
 
+#if __x86_64__
 #include <emmintrin.h>        // for _mm_cvtsi128_si32, _mm_srli_si128
 #include <immintrin.h>        // for _mm256_set_epi64x, __m256, _mm256_and_si256
+#elif __aarch64__
+#include <sse2neon.h>
+#endif
 #include <limits.h>           // for CHAR_BIT
 #include <stdint.h>           // for uint32_t, uint64_t, int32_t, uint8_t, uintp...
 

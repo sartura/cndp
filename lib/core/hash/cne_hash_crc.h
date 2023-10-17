@@ -14,6 +14,9 @@
 #include <stdint.h>
 #include <cne_branch_prediction.h>
 #include <cne_common.h>
+#if __aarch64__
+#include <arm_acle.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -357,6 +360,7 @@ crc32c_2words(uint64_t data, uint32_t init_val)
     return crc;
 }
 
+#if __x86_64__
 static inline uint32_t
 crc32c_sse42_u8(uint8_t data, uint32_t init_val)
 {
@@ -406,6 +410,7 @@ crc32c_sse42_u64(uint64_t data, uint64_t init_val)
                      : [data] "rm"(data));
     return (uint32_t)init_val;
 }
+#endif
 
 #define CRC32_SW        (1U << 0)
 #define CRC32_SSE42     (1U << 1)
@@ -456,8 +461,10 @@ CNE_INIT(cne_hash_crc_init_alg)
 static inline uint32_t
 cne_hash_crc_1byte(uint8_t data, uint32_t init_val)
 {
+#if __x86_64__
     if (likely(crc32_alg & CRC32_SSE42))
         return crc32c_sse42_u8(data, init_val);
+#endif
 
     return crc32c_1byte(data, init_val);
 }
@@ -477,8 +484,10 @@ cne_hash_crc_1byte(uint8_t data, uint32_t init_val)
 static inline uint32_t
 cne_hash_crc_2byte(uint16_t data, uint32_t init_val)
 {
+#if __x86_64__
     if (likely(crc32_alg & CRC32_SSE42))
         return crc32c_sse42_u16(data, init_val);
+#endif
 
     return crc32c_2bytes(data, init_val);
 }
@@ -498,8 +507,10 @@ cne_hash_crc_2byte(uint16_t data, uint32_t init_val)
 static inline uint32_t
 cne_hash_crc_4byte(uint32_t data, uint32_t init_val)
 {
+#if __x86_64__
     if (likely(crc32_alg & CRC32_SSE42))
         return crc32c_sse42_u32(data, init_val);
+#endif
 
     return crc32c_1word(data, init_val);
 }
@@ -519,11 +530,13 @@ cne_hash_crc_4byte(uint32_t data, uint32_t init_val)
 static inline uint32_t
 cne_hash_crc_8byte(uint64_t data, uint32_t init_val)
 {
+#if __x86_64__
     if (likely(crc32_alg == CRC32_SSE42_x64))
         return crc32c_sse42_u64(data, init_val);
 
     if (likely(crc32_alg & CRC32_SSE42))
         return crc32c_sse42_u64_mimic(data, init_val);
+#endif
 
     return crc32c_2words(data, init_val);
 }

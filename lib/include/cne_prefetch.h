@@ -13,6 +13,10 @@
 
 #include <cne_common.h>
 
+#if __aarch64__
+#include <sse2neon.h>
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -24,9 +28,15 @@ extern "C" {
  *    Pointer to cacheline to prefetch
  */
 static inline void
+#if __aarch64__
+cne_prefetch0(const void *p)
+{
+    _mm_prefetch((const void *)p, _MM_HINT_T0);
+#else
 cne_prefetch0(const volatile void *p)
 {
     asm volatile("prefetcht0 %[p]" : : [p] "m"(*(const volatile char *)p));
+#endif
 }
 
 /**
@@ -36,9 +46,15 @@ cne_prefetch0(const volatile void *p)
  *    Pointer to cacheline to prefetch
  */
 static inline void
+#if __aarch64__
+cne_prefetch1(const void *p)
+{
+    _mm_prefetch((const void *)p, _MM_HINT_T1);
+#else
 cne_prefetch1(const volatile void *p)
 {
     asm volatile("prefetcht1 %[p]" : : [p] "m"(*(const volatile char *)p));
+#endif
 }
 
 /**
@@ -48,9 +64,15 @@ cne_prefetch1(const volatile void *p)
  *    Pointer to cacheline to prefetch
  */
 static inline void
+#if __aarch64__
+cne_prefetch2(const void *p)
+{
+    _mm_prefetch((const void *)p, _MM_HINT_T2);
+#else
 cne_prefetch2(const volatile void *p)
 {
     asm volatile("prefetcht2 %[p]" : : [p] "m"(*(const volatile char *)p));
+#endif
 }
 
 /**
@@ -61,9 +83,15 @@ cne_prefetch2(const volatile void *p)
  *    Pointer to cacheline to prefetch
  */
 static inline void
+#if __aarch64__
+cne_prefetch_non_temporal(const void *p)
+{
+    _mm_prefetch((const void *)p, _MM_HINT_NTA);
+#else
 cne_prefetch_non_temporal(const volatile void *p)
 {
     asm volatile("prefetchnta %[p]" : : [p] "m"(*(const volatile char *)p));
+#endif
 }
 
 /**

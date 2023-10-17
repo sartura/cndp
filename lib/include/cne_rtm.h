@@ -28,7 +28,16 @@ cne_xbegin(void)
 {
     unsigned int ret = CNE_XBEGIN_STARTED;
 
+#if __x86_64__
     asm volatile(".byte 0xc7,0xf8 ; .long 0" : "+a"(ret)::"memory");
+#elif __aarch64__
+/*    __asm volatile(
+        ".byte 0xc7,0xf8 ; .long 0"
+        : "+a"(ret)
+        ::"memory"
+    );
+*/
+#endif
     return ret;
 }
 

@@ -79,7 +79,7 @@ if cne_conf.has('CNE_ARCH_X86')
 	endif
 endif
 
-deps += [cne]
+deps += [cne, arm]
 
 libacl = library(libname, sources, c_args: args, objects: objs, install: true, dependencies: deps)
 acl = declare_dependency(link_with: libacl, include_directories: include_directories('.'))

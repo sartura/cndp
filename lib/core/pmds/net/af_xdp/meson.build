@@ -4,7 +4,7 @@
 sources = files('pmd_af_xdp.c')
 headers = files('pmd_af_xdp.h')
 
-deps += [mmap, cne, kvargs, pktdev, mempool, pktmbuf, ring, uds, xskdev, bpf_dep]
+deps += [mmap, cne, kvargs, pktdev, mempool, pktmbuf, ring, uds, xskdev, bpf_dep, arm]
 
 libpmd_af_xdp = static_library('pmd_af_xdp', sources, install: true, dependencies: deps)
 

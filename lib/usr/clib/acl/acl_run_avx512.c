@@ -2,8 +2,12 @@
  * Copyright (c) 2020-2023 Intel Corporation
  */
 
+#if __x86_64__
 #include <emmintrin.h>        // for _mm_loadu_si128, _mm_storeu_si128
 #include <immintrin.h>        // for _mm_mask_mov_epi32, __mmask8, _mm_cmp...
+#elif __aarch64__
+#include <sse2neon.h>
+#endif
 #include <limits.h>           // for CHAR_BIT
 #include <stdint.h>           // for uint32_t, uint8_t, int32_t, uint64_t
 

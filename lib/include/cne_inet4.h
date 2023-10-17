@@ -10,7 +10,11 @@
  * CNE INET routines.
  */
 
+#if __x86_64__
 #include <immintrin.h>
+#elif __aarch64__
+#include <sse2neon.h>
+#endif
 #include <stdbool.h>
 #include <bsd/string.h>
 #include <net/ethernet.h>

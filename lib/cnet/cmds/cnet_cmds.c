@@ -4,7 +4,11 @@
 
 #include <stdio.h>        // for stdout, NULL
 #include <regex.h>
+#if __x86_64__
 #include <immintrin.h>             // for __m256i
+#elif __aarch64__
+#include <sse2neon.h>
+#endif
 #include <cnet.h>                  // for cnet, per_thread_cnet, this_cnet, cnet_l...
 #include <cnet_stk.h>              // for per_thread_stk, this_stk, stk_entry, cne...
 #include <cne_inet.h>              // for

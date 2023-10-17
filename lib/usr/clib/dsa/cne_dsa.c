@@ -16,7 +16,12 @@
 #include <limits.h>                       // for PATH_MAX
 #include <stdlib.h>                       // for free, calloc, aligned_alloc
 #include <unistd.h>                       // for close
+#if __x86_64__
 #include <xmmintrin.h>                    // IWYU pragma: keep
+#elif __aarch64__
+#include <sse2neon.h>
+#include <arm_cpuid.h>
+#endif
 
 #include "cne_dsa.h"
 #include "dsa_priv.h"          // for dsa, idxd_hw_desc, dsa_user_hdl
@@ -191,9 +196,11 @@ dsa_perform_ops(uint16_t dev)
     };
 
     _mm_sfence(); /* fence before writing desc to device */
+#if __x86_64__
     if (idxd->portal)
         cne_movdir64b(idxd->portal, &batch_desc);
     else
+#endif
         dsa_perform_ops_in_software(idxd, &batch_desc);
     idxd->stats.started += idxd->batch_size;
 

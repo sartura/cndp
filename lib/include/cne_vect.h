@@ -24,7 +24,11 @@
 
 #else
 
+#if __x86_64__
 #include <x86intrin.h>
+#elif __aarch64__
+#include <sse2neon.h>
+#endif
 
 #endif
 

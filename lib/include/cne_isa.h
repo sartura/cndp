@@ -9,6 +9,12 @@
 #define _CNE_ISA_H_
 
 #include <cne_common.h>        // for CNDP_API
+#include <cne_log.h>
+
+#if __aarch64__
+#include <sse2neon.h>
+#include <arm_intrinsics.h>
+#endif
 
 /**
  * @file
@@ -35,8 +41,16 @@ extern "C" {
 static __cne_always_inline void
 cne_umonitor(volatile void *addr)
 {
+#if __x86_64__
     /* UMONITOR */
     asm volatile(".byte 0xf3, 0x0f, 0xae, 0xf7;" : : "D"(addr));
+#elif __aarch64__
+    CNE_SET_USED(addr);
+    /*
+     * Probably __INTR_ARM_WFE() can be used for this.
+     */
+    CNE_ERR("Not supported yet in ARM\n");
+#endif
 }
 
 /**
@@ -55,6 +69,7 @@ cne_umonitor(volatile void *addr)
 static __cne_always_inline void
 cne_umwait(const uint64_t timestamp)
 {
+#if __x86_64__
     const uint32_t l = (uint32_t)timestamp;
     const uint32_t h = (uint32_t)(timestamp >> 32);
 
@@ -63,6 +78,13 @@ cne_umwait(const uint64_t timestamp)
                  :         /* ignore rflags */
                  : "D"(0), /* enter C0.2 */
                    "a"(l), "d"(h));
+#elif __aarch64__
+    CNE_SET_USED(timestamp);
+    /*
+     * Probably __INTR_ARM_WFE() can be used for this.
+     */
+    CNE_ERR("Not supported yet in ARM\n");
+#endif
 }
 
 /**
@@ -80,6 +102,7 @@ cne_umwait(const uint64_t timestamp)
 static __cne_always_inline void
 cne_tpause(const uint64_t timestamp)
 {
+#if __x86_64__
     const uint32_t l = (uint32_t)timestamp;
     const uint32_t h = (uint32_t)(timestamp >> 32);
 
@@ -88,6 +111,10 @@ cne_tpause(const uint64_t timestamp)
                  :         /* ignore rflags */
                  : "D"(0), /* enter C0.2 */
                    "a"(l), "d"(h));
+#elif __aarch64__
+    CNE_SET_USED(timestamp);
+    asm volatile("yield" ::: "memory");
+#endif
 }
 
 /**
@@ -103,8 +130,16 @@ cne_tpause(const uint64_t timestamp)
 static __cne_always_inline void
 cne_movdiri(volatile void *addr, uint32_t value)
 {
+#if __x86_64__
     /* MOVDIRI */
     asm volatile(".byte 0x40, 0x0f, 0x38, 0xf9, 0x02" : : "a"(value), "d"(addr));
+#elif __aarch64__
+    // vst1_u32((volatile uint32_t *)addr, vreinterpretq_u32_m128i(value));
+    // vst1_u32((uint32_t *)addr, value);
+    CNE_SET_USED(addr);
+    CNE_SET_USED(value);
+    CNE_ERR("Not supported yet in ARM\n");
+#endif
 }
 
 /**
@@ -120,8 +155,18 @@ cne_movdiri(volatile void *addr, uint32_t value)
 static __cne_always_inline void
 cne_movdir64b(volatile void *dst, const void *src)
 {
+#if __x86_64__
     /* MOVDIR64B */
     asm volatile(".byte 0x66, 0x0f, 0x38, 0xf8, 0x02" : : "a"(dst), "d"(src) : "memory");
+#elif __aarch64__
+    // void *dst2 = dst;
+    // memcpy(dst2, src, 64);
+    // dst = dst2;
+    // vst1_u64((uint64_t *)dst, *(uint64_t *)src);
+    CNE_SET_USED(dst);
+    CNE_SET_USED(src);
+    CNE_ERR("Not supported yet in ARM\n");
+#endif
 }
 
 /**
@@ -135,8 +180,13 @@ cne_movdir64b(volatile void *dst, const void *src)
 static __cne_always_inline void
 cne_cldemote(const volatile void *p)
 {
+#if __x86_64__
     /* CLDEMOTE */
     asm volatile(".byte 0x0f, 0x1c, 0x06" ::"S"(p));
+#elif __aarch64__
+    CNE_SET_USED(p);
+    CNE_ERR("Not supported yet in ARM\n");
+#endif
 }
 
 #ifdef __cplusplus

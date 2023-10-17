@@ -4,7 +4,7 @@
 sources = files('cne_thread.c')
 headers = files('cne_thread.h')
 
-deps += [cne, mmap]
+deps += [cne, mmap, arm]
 
 libthread = library(libname, sources, install: true, dependencies: deps)
 thread = declare_dependency(link_with: libthread, include_directories: include_directories('.'))

@@ -2,7 +2,11 @@
  * Copyright (c) 2020-2023 Intel Corporation
  */
 
+#if __x86_64__
 #include <immintrin.h>        // for _mm512_set1_epi32, __m512i, _mm512_and_epi32
+#elif __aarch64__
+#include <sse2neon.h>
+#endif
 
 #include "dir24_8.h"        // for dir24_8_tbl, dir24_8_lookup_bulk_1b, dir24_8...
 #include "dir24_8_avx512.h"

@@ -7,12 +7,17 @@
  * ACL support for x86 archs: sse version.
  */
 
-#include <emmintrin.h>        // for _mm_loadu_si128, _mm_cvtsi128_si32, _mm_and_...
 #include <limits.h>           // for CHAR_BIT
-#include <smmintrin.h>        // for _mm_blendv_epi8, _mm_insert_epi32, _mm_testz...
 #include <stdint.h>           // for uint64_t, uint32_t, int32_t, uint8_t
+#if __x86_64__
+#include <emmintrin.h>        // for _mm_loadu_si128, _mm_cvtsi128_si32, _mm_and_...
+#include <smmintrin.h>        // for _mm_blendv_epi8, _mm_insert_epi32, _mm_testz...
 #include <tmmintrin.h>        // for _mm_shuffle_epi8, _mm_maddubs_epi16, _mm_sig...
 #include <xmmintrin.h>        // for __m128, _mm_shuffle_ps
+#elif __aarch64__
+#include <sse2neon.h>
+#include <arm_cpuid.h>
+#endif
 
 #include "acl_run.h"           // for acl_flow_data, GET_NEXT_4BYTES, completion
 #include "acl_vect.h"          // for ACL_TR_CALC_ADDR, ACL_TR_HILO

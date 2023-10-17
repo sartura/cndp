@@ -28,7 +28,8 @@
  * SUCH DAMAGE.
  */
 
-#if defined(__x86_64__)
+// #if defined(__x86_64__)
+#if __x86_64__
 __asm__(".text\n"
         ".p2align 4,,15\n"
         ".globl cthread_switch\n"
@@ -54,6 +55,7 @@ __asm__(".text\n"
         "	movq 8(%rdi), %rbp	# restore frame_pointer\n"
         "	movq %rax, (%rsp)\n"
         "	ret\n");
+#elif __aarch64__
 #else /* if defined(__x86_64__) */
 #pragma GCC error "__x86_64__ is not defined"
 #endif /* if defined(__x86_64__) */

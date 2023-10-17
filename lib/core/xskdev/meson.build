@@ -4,7 +4,7 @@
 sources = files('xskdev.c')
 headers = files('xskdev.h')
 
-deps += [cne, uds, mmap, mempool, pktmbuf, bpf_dep]
+deps += [cne, uds, mmap, mempool, pktmbuf, bpf_dep, arm]
 
 libxskdev = library(libname, sources, install: true, dependencies: deps)
 xskdev = declare_dependency(link_with: libxskdev, include_directories: include_directories('.'))

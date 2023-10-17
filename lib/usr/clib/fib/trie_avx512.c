@@ -3,7 +3,11 @@
  */
 
 #include <cne_vect.h>         // for __cne_x86_zmm_t
+#if __x86_64__
 #include <immintrin.h>        // for __m512i, _mm512_set1_epi32, _mm512_loadu_s...
+#elif __aarch64__
+#include <sse2neon.h>
+#endif
 
 #include "private_fib6.h"        // for IPV6_ADDR_LEN
 #include "trie.h"                // for cne_trie_tbl, cne_trie_lookup_bulk_2b, cne...

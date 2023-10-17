@@ -63,6 +63,23 @@ enum cmp_jump_table_case {
 };
 // clang-format on
 
+#if __aarch64__
+// clang-format off
+const enum cmp_jump_table_case cmp_jump_key_tab[NUM_KEY_CMP_CASES] = {
+    KEY_CUSTOM,
+    KEY_16_BYTES,
+    KEY_32_BYTES,
+    KEY_48_BYTES,
+    KEY_64_BYTES,
+    KEY_80_BYTES,
+    KEY_96_BYTES,
+    KEY_112_BYTES,
+    KEY_128_BYTES,
+    KEY_OTHER_BYTES
+};
+// clang-format on
+#endif
+
 /*
  * Table storing all different key compare functions
  * (multi-process supported)

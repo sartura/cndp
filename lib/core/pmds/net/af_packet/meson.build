@@ -4,7 +4,7 @@
 sources = files('pmd_af_packet.c')
 headers = files('pmd_af_packet.h')
 
-deps += [cne, mempool, mmap, pktdev, pktmbuf]
+deps += [cne, mempool, mmap, pktdev, pktmbuf, arm]
 
 libpmd_af_packet = static_library('pmd_af_packet', sources, install: true, dependencies: deps)
 

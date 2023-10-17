@@ -10,7 +10,7 @@ headers = files(
 
 sources = files('cne_cuckoo_hash.c', 'cne_fbk_hash.c')
 
-deps += [ring, cne]
+deps += [ring, cne, arm]
 
 libhash = library(libname, sources, install: true, dependencies: deps)
 hash = declare_dependency(link_with: libhash, include_directories: include_directories('.'))

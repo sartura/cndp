@@ -4,7 +4,9 @@
 sources = files('cne_event.c')
 headers = files('cne_event.h')
 
-deps += []
+deps += [
+	arm,
+	]
 
 libevents = library(libname, sources, install: true, dependencies: deps)
 events = declare_dependency(link_with: libevents, include_directories: include_directories('.'))

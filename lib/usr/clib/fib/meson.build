@@ -5,7 +5,7 @@
 sources = files('cne_fib.c', 'cne_fib6.c', 'dir24_8.c', 'trie.c')
 headers = files('cne_fib.h', 'cne_fib6.h')
 
-deps += [cne, mempool, mmap, rib, pktmbuf]
+deps += [cne, mempool, mmap, rib, pktmbuf, arm]
 
 static_cne = []
 objs = []

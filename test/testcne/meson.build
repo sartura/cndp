@@ -103,6 +103,7 @@ deps = [
     tun,
     utils,
     xskdev,
+	arm,
 ]
 
 if cne_conf.get('HAS_UINTR_SUPPORT')

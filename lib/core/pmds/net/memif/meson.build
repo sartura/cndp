@@ -5,7 +5,7 @@
 sources = files('pmd_memif_socket.c', 'memif_socket.c')
 headers = files('pmd_memif_socket.h', 'memif_socket.h', 'memif.h')
 
-deps += [mmap, cne, kvargs, events, pktdev, mempool, pktmbuf, ring, hash]
+deps += [mmap, cne, kvargs, events, pktdev, mempool, pktmbuf, ring, hash, arm]
 
 libpmd_memif = static_library('pmd_memif', sources, install:true, dependencies: deps)
 

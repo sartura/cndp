@@ -17,7 +17,9 @@ headers = files(
     'vt100_out.h',
     )
 
-deps += []
+deps += [
+	arm, 
+	]
 
 libosal = library(libname, sources, install: true, dependencies: deps)
 osal = declare_dependency(link_with: libosal, include_directories: include_directories('.'))

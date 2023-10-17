@@ -30,7 +30,9 @@ extern "C" {
 #endif
 
 #ifndef asm
+#if __x86_64__
 #define asm __asm__
+#endif
 #endif
 
 #define CNE_VER_PREFIX       "CNDP"
@@ -113,10 +115,14 @@ typedef uint16_t unaligned_uint16_t;
  * Guarantees that operation reordering does not occur at compile time
  * for operations directly before and after the barrier.
  */
+#if __x86_64__
 #define cne_compiler_barrier()           \
     do {                                 \
         asm volatile("" : : : "memory"); \
     } while (0)
+#elif __aarch64__
+#define cne_compiler_barrier() _sse2neon_smp_mb();
+#endif
 
 /**
  * Force alignment

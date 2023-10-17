@@ -4,7 +4,7 @@
 sources = files('pmd_null.c')
 headers = files('pmd_null.h')
 
-deps += [cne, mempool, mmap, pktdev, pktmbuf]
+deps += [cne, mempool, mmap, pktdev, pktmbuf, arm]
 
 libpmd_null = static_library('pmd_null', sources, install: true, dependencies: deps)
 

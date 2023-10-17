@@ -18,7 +18,7 @@ dirs = [
 ]
 
 foreach d:dirs
-    deps = [build_cfg, include, osal, log]
+    deps = [build_cfg, include, osal, log, arm]
 
     libname = 'cne_' + d
     enabled_libs += libname

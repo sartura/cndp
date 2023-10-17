@@ -14,7 +14,12 @@
 #include <cne_ring.h>                     // for cne_ring_t
 #include <cne_rwlock.h>                   // for cne_rwlock_write_unlock, cne_rwlo...
 #include <bsd/string.h>                   // for strlcpy
+#if __x86_64__
 #include <emmintrin.h>                    // for _mm_cmpeq_epi16, _mm_load_si128
+#elif __aarch64__
+#include <sse2neon.h>
+#include <arm_cpuid.h>
+#endif
 #include <stdlib.h>                       // for free, calloc
 
 #include "cne_hash.h"        // for cne_hash_parameters, CNE_HASH_LOO...
@@ -225,6 +230,13 @@ cne_hash_create(const struct cne_hash_parameters *params)
     if (tbl_chng_cnt == NULL)
         CNE_ERR_GOTO(err_unlock, "memory allocation failed\n");
 
+#if __aarch64__
+    if ((params->key_len % 16) == 0)
+        h->cmp_jump_table_idx = cmp_jump_key_tab[(params->key_len / 16)];
+    else
+        // If key is not multiple of 16, use generic memcmp
+        h->cmp_jump_table_idx = KEY_OTHER_BYTES;
+#else
     /*
      * Select appropriate compare function,
      * which may use x86 intrinsics, otherwise use memcmp
@@ -259,6 +271,7 @@ cne_hash_create(const struct cne_hash_parameters *params)
         /* If key is not multiple of 16, use generic memcmp */
         h->cmp_jump_table_idx = KEY_OTHER_BYTES;
     }
+#endif
 
     /* Default hash function */
     default_hash_func = (cne_hash_function)cne_hash_crc;

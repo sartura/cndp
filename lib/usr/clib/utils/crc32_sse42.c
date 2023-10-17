@@ -37,6 +37,9 @@ __FBSDID("$FreeBSD$");
 #include <sys/systm.h>
 #include <sys/kernel.h>
 #endif
+#if __aarch64__
+#include <arm_acle.h>
+#endif
 
 static __inline uint32_t
 _mm_crc32_u8(uint32_t x, uint8_t y)
@@ -64,7 +67,11 @@ _mm_crc32_u64(uint64_t x, uint64_t y)
 static __inline uint32_t
 _mm_crc32_u32(uint32_t x, uint32_t y)
 {
+#if __x86_64__
     __asm("crc32l %1,%0" : "+r"(x) : "r"(y));
+#elif __aarch64__
+    __asm("crc32w %1,%0" : "+r"(x) : "r"(y));
+#endif
     return (x);
 }
 #endif

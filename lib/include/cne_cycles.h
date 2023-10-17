@@ -13,6 +13,9 @@
 #include <cne_atomic.h>
 
 #include <cne_common.h>
+#if __aarch64__
+#include <time.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -38,13 +41,20 @@ cne_rdtsc(void)
             uint32_t lo_32;
             uint32_t hi_32;
         };
+#if __aarch64__
+        struct timespec tm_now;
+#endif
     } tsc;
 
+#if __x86_64__
     // clang-format off
     asm volatile("rdtsc" :
              "=a" (tsc.lo_32),
              "=d" (tsc.hi_32));
     // clang-format on
+#elif __aarch64__
+    clock_gettime(CLOCK_MONOTONIC, &tsc.tm_now);
+#endif
     return tsc.tsc_64;
 }
 

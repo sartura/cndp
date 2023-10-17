@@ -4,7 +4,7 @@
 sources = files('cne_dsa.c', 'sw_dsa.c')
 headers = files('cne_dsa.h')
 
-deps += []
+deps += [arm]
 
 libdsa = library(libname, sources, install: true, dependencies: deps)
 dsa = declare_dependency(link_with: libdsa, include_directories: include_directories('.'))

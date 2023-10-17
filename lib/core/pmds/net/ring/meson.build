@@ -4,7 +4,7 @@
 sources = files('pmd_ring.c')
 headers = files('pmd_ring.h')
 
-deps += [pktdev, ring, pktmbuf, mmap, mempool, cne, kvargs]
+deps += [pktdev, ring, pktmbuf, mmap, mempool, cne, kvargs, arm]
 
 libpmd_ring = static_library('pmd_ring', sources, install: true, dependencies: deps)
 

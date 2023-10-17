@@ -36,6 +36,7 @@ enabled_pmd_libs = []
 cne_conf = configuration_data()
 
 machine_args = []
+more_cflags = []
 
 ##################################################################
 # set the major version, which might be used by pmds and libraries
@@ -284,6 +285,14 @@ if ldver.contains('2.31') and cc.has_argument('-mno-avx512f')
     message('Binutils 2.31 detected, disabling AVX512 support as workaround for bug #249')
 endif
 
+if host_machine.cpu_family() == 'aarch64' or host_machine.cpu_family().startswith('arm')
+	message('Building for ARM ...')
+	cne_conf.set('__x86_64__', 0)
+	cne_conf.set('__aarch64__', 1)
+	cne_conf.set('CNE_FORCE_INTRINSICS', 1)
+else
+cne_conf.set('__x86_64__', 1)
+cne_conf.set('__aarch64__', 0)
 # we require SSE4.2 for CNDP
 sse_errormsg = '''SSE4.2 instruction set is required for CNDP.
 Please set the machine type to "nehalem" or "corei7" or higher value'''
@@ -297,6 +306,7 @@ foreach f:base_flags
     cne_conf.set('CNE_MACHINE_CPUFLAG_' + f, 1)
     compile_time_cpuflags += ['CNE_CPUFLAG_' + f]
 endforeach
+endif
 
 optional_flags = ['AES', 'PCLMUL',
         'AVX', 'AVX2', 'AVX512F',
@@ -483,6 +493,10 @@ cndp_pmds_a = custom_target('libcndp_pmds_a_target',
 
 pkg = import('pkgconfig')
 
+if cne_conf.get('__aarch64__') == 1
+	more_cflags = '-mtune=generic'
+endif
+
 message('>>> Create pkg-config file')
 pkg.generate(name: meson.project_name(),
     filebase: 'lib' + meson.project_name().to_lower(),
@@ -494,7 +508,8 @@ pkg.generate(name: meson.project_name(),
 Note that CFLAGS might contain an -march flag higher than typical baseline.
 This is required for a number of static inline functions in the public headers.''',
     subdirs: ['cndp', 'cndp/cnet'],
-    extra_cflags: ['-include', build_cfg_file] + machine_args,
+    extra_cflags: ['-include', build_cfg_file] + machine_args + more_cflags,
     install_dir: 'lib/pkgconfig'
 )
+
 message('<<< Done pkg-config file')

@@ -5,7 +5,11 @@
 #ifndef _CNE_PAUSE_H_
 #define _CNE_PAUSE_H_
 
+#if __x86_64__
 #include <emmintrin.h>
+#elif __aarch64__
+#include <sse2neon.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {

@@ -9,6 +9,7 @@
 # core libs which are widely reused, so their deps are kept to a minimum.
 
 special_dirs = [
+    'arm',
     'osal',
     'log',
 ]

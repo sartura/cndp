@@ -67,6 +67,9 @@
 #include "cthread_sema.h"
 #include "cthread_tls.h"
 #include "cthread_barrier.h"
+#if __aarch64__
+#include "arm_cpuid.h"
+#endif
 
 /*
  * This file implements the cthread scheduler
@@ -626,6 +629,9 @@ cthread_run(void)
 int
 cthread_set_affinity(int threadid)
 {
+#if __aarch64__
+    return __arm_cthread_set_affinity(threadid);
+#else
     struct cthread *ct               = THIS_CTHREAD;
     struct cthread_sched *dest_sched = cthread_sched_find(threadid);
 
@@ -639,6 +645,7 @@ cthread_set_affinity(int threadid)
         return 0;
     }
     return 0;
+#endif
 }
 
 /* constructor */

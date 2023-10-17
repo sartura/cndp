@@ -12,7 +12,7 @@ headers = files(
     'pktdev_driver.h',
     )
 
-deps += [cne, mempool, mmap, pktmbuf, uds, xskdev]
+deps += [cne, mempool, mmap, pktmbuf, uds, xskdev, arm]
 
 libpktdev = library(libname, sources, install: true, dependencies: deps)
 pktdev = declare_dependency(link_with: libpktdev, include_directories: include_directories('.'))
